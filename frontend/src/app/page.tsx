@@ -2,6 +2,7 @@
 import { useState} from 'react';
 import axios from 'axios';
 import { cn } from "@/lib/utils";
+import { useRouter } from 'next/navigation';
 
 import { InteractiveGridPattern } from "../components/background/interactive-grid-pattern";
 import InteractiveHoverButton from "../components/ui/interactive-hover-button";
@@ -19,15 +20,18 @@ const images = slugs.map((slug) => `https://cdn.simpleicons.org/${slug}/${slug}`
 
 export default function Home() {
   const [code, setCode] = useState<string>('');
-  const [response, setResponse] = useState<string>('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const result = await axios.post('http://localhost:8000/debug', { code });
-      setResponse(result.data);
+      const debuggedCode = result.data;
+
+       router.push(`/response?originalCode=${encodeURIComponent(code)}&debuggedCode=${encodeURIComponent(debuggedCode)}`);
     } catch (error) {
-      setResponse('Error in debugging process');
+      console.log('Error in debugging process',error);
+      alert('Failed to debug the code. Please try again.');
     }
   };
 
@@ -35,7 +39,7 @@ export default function Home() {
     <div className="relative flex min-h-screen text-foreground w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
       <div className="relative flex flex-row w-full h-full">
         {/* Left-side container */}
-        <div className="w-3/5 flex flex-col items-start justify-center p-10 space-y-6 z-10">
+        <div className="w-1/2 flex flex-col items-start justify-center p-10 space-y-6 z-10">
           <div className="text-4xl font-bold tracking-tight text-left shadow-gray-300 text-black dark:text-white">
             <TypingAnimation>Code Debugging AI Agent</TypingAnimation>
           </div>
@@ -56,7 +60,7 @@ export default function Home() {
         </div>
         
         {/* Right-side container for cloud icons */}
-        <div className="w-2/5 flex items-center justify-center p-6">
+        <div className="w-1/2 flex items-center justify-center p-6">
           <IconCloud images={images} />
         </div>
       </div>

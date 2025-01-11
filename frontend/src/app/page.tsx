@@ -25,6 +25,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("sending data:",{code})
       const result = await axios.post('http://localhost:8000/debug', { code });
       const debuggedCode = result.data;
 

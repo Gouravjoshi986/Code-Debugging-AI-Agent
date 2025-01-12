@@ -26,7 +26,7 @@ export default function Home() {
     e.preventDefault();
     try {
       console.log("sending data:",{code})
-      const result = await axios.post('http://localhost:8000/debug', { code });
+      const result = await axios.post('http://localhost:5000/debug', { 'code':code });
       const debuggedCode = result.data;
 
        router.push(`/response?originalCode=${encodeURIComponent(code)}&debuggedCode=${encodeURIComponent(debuggedCode)}`);

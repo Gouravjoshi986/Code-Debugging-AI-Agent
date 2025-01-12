@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend-container
+    ports:
+      - "5000:5000"
+    environment:
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - HF_API_TOKEN=${HF_API_TOKEN}
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend-container
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

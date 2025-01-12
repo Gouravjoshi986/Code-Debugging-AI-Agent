@@ -1,0 +1,21 @@
+# Use official Python image as base image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the backend application files to the working directory
+COPY . /app/
+
+# Install dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Expose the port your app will run on
+EXPOSE 5000
+
+# Set environment variable to indicate production
+ENV FLASK_ENV=production
+
+# Command to run the app
+CMD ["python", "app.py"]

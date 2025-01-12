@@ -52,29 +52,38 @@ def home():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
+import traceback
+
 @app.route("/debug", methods=["POST"])
 def debug_code():
     try:
-        # Get the code input from frontend
+        # Get the 'code' input from the JSON body
         code_input = request.json.get("code")
         
         if not code_input:
             return jsonify({"error": "Code input is required."}), 400
-        
-        # Get response from HuggingFace model (or another model)
-        llm = HuggingFaceEndpoint(repo_id="EleutherAI/gpt-neo-2.7B",token=os.environ.get("HF_API_TOKEN"))
-        response = llm.invoke(code_input)  # Generate response from model
-        
-         # Convert code_input to embeddings
-        embeddings = embedding_model.embed_query(code_input)
 
-        # Upsert the embeddings to Pinecone
-        vectorstore.index.upsert([(str(i), embeddings[i]) for i in range(len(embeddings))])
-        
-        # Return the response to frontend
+        # 1. Retrieve the most relevant code snippets from Pinecone
+        query_vector = embedding_model.embed_query(code_input)
+        retrieval_results = vectorstore.similarity_search_by_vector(query_vector, top_k=3)  # Retrieve top 3 most relevant code snippets
+
+        # 2. Combine retrieved code snippets with the input code
+        context = "\n".join([result['text'] for result in retrieval_results['matches']])
+
+        # 3. Create a prompt for the HuggingFace model (including the context and user code)
+        prompt = f"Given the following code snippets and the user's code, debug the code:\n\nContext:\n{context}\n\nUser Code:\n{code_input}"
+
+        # 4. Send the prompt to HuggingFace model for generation
+        llm = HuggingFaceEndpoint(repo_id="EleutherAI/gpt-neo-2.7B", token=os.environ.get("HF_API_TOKEN"))
+        response = llm.invoke(prompt)  # Generate response from model
+
+        # 5. Return the response to the frontend
         return jsonify({"debuggedCode": response})
 
     except Exception as e:
+        # Log the exception traceback to understand the error better
+        print(f"Error: {str(e)}")
+        print(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":

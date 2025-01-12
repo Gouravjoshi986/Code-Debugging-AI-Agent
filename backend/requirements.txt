@@ -1,0 +1,6 @@
+Flask==3.1.0
+Flask_Cors==5.0.0
+langchain_community==0.3.14
+langchain_huggingface==0.1.2
+pinecone==5.4.2
+python-dotenv==1.0.1

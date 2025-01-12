@@ -16,16 +16,20 @@ Project Setup
 1. Clone the Repository
 Clone the repository to your local machine:
 
+```bash
 git clone https://github.com/your-username/code-debugging-ai-agent.git
 cd code-debugging-ai-agent
+```
 
 2. Backend Setup
 Step 1: Create a Python Virtual Environment (Optional)
 It is recommended to create a virtual environment to avoid conflicts with other Python projects:
 
+```bash
 python -m venv venv
 source venv/bin/activate
 venv\Scripts\activate #On Windows
+```
 
 Step 2: Install Dependencies
 Install the necessary Python packages listed in requirements.txt:
@@ -80,6 +84,7 @@ You can test the debugging feature by sending a POST request to the backend at h
 {
   "code": "your code snippet here"
 }
+```
 
 6. Deployment
 The application is containerized using Docker. You can deploy it to cloud platforms such as AWS, Azure, or Google Cloud by following the respective cloud provider's documentation for Docker deployments.

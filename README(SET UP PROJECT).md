@@ -16,7 +16,6 @@ Project Setup
 1. Clone the Repository
 Clone the repository to your local machine:
 
-```bash
 git clone https://github.com/your-username/code-debugging-ai-agent.git
 cd code-debugging-ai-agent
 
@@ -24,31 +23,26 @@ cd code-debugging-ai-agent
 Step 1: Create a Python Virtual Environment (Optional)
 It is recommended to create a virtual environment to avoid conflicts with other Python projects:
 
-```bash
 python -m venv venv
 source venv/bin/activate
 venv\Scripts\activate #On Windows
-```
 
 Step 2: Install Dependencies
 Install the necessary Python packages listed in requirements.txt:
 
-```bash
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 Step 3: Set Up Environment Variables
 Create a .env file in the root directory and add your Pinecone API key and HuggingFace API token:
 
-```bash
-PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_ENV=your_pinecone_env
-HF_API_TOKEN=your_huggingface_api_token```
+`PINECONE_API_KEY=your_pinecone_api_key`
+`PINECONE_ENV=your_pinecone_env`
+`HF_API_TOKEN=your_huggingface_api_token`
 
 Step 4: Start the Backend
 Run the Flask backend server:
 
-```bash
-python app.py```
+`python app.py`
 
 The backend will run locally at `http://localhost:5000`.
 
@@ -56,9 +50,8 @@ The backend will run locally at `http://localhost:5000`.
 Step 1: Install Dependencies
 Navigate to the frontend directory and install the required Node.js packages:
 
-```bash
-cd frontend
-npm install```
+`cd frontend`
+`npm install`
 
 Step 2: Start the Frontend
 Run the Next.js frontend server:
@@ -87,7 +80,6 @@ You can test the debugging feature by sending a POST request to the backend at h
 {
   "code": "your code snippet here"
 }
-```
 
 6. Deployment
 The application is containerized using Docker. You can deploy it to cloud platforms such as AWS, Azure, or Google Cloud by following the respective cloud provider's documentation for Docker deployments.
